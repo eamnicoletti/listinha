@@ -7,10 +7,13 @@ class UserImageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return InkWell(
       child: CircleAvatar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        foregroundColor: Colors.white,
+        backgroundColor: colorScheme.inversePrimary,
+        foregroundColor: colorScheme.onPrimary,
         child: const Text('A'),
       ),
     );
