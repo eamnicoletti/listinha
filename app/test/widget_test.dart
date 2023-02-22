@@ -8,7 +8,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:listinha/main.dart';
 import 'package:listinha/src/app_widget.dart';
 
 void main() {
