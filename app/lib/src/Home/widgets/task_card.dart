@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:listinha/src/shared/services/realm/models/task_model.dart';
 
+enum TaskCardStatus {
+  pending(Icons.access_time, 'Pendente'),
+  completed(Icons.check, 'Completa'),
+  disabled(Icons.cancel_outlined, 'Desativada');
+
+  final IconData icon;
+  final String text;
+
+  const TaskCardStatus(this.icon, this.text);
+}
+
 class TaskCard extends StatelessWidget {
   final TaskBoard board;
 
   const TaskCard({Key? key, required this.board}) : super(key: key);
 
   double getProgress(List<Task> tasks) {
+    if (tasks.isEmpty) return 0;
     final completes = tasks.where((task) => task.completed).length;
     return completes / tasks.length;
   }
@@ -16,16 +28,52 @@ class TaskCard extends StatelessWidget {
     return '$completes/${tasks.length}';
   }
 
+  TaskCardStatus getStatus(TaskBoard board, double progress) {
+    if (!board.enable) {
+      return TaskCardStatus.disabled;
+    } else if (progress < 1.0) {
+      return TaskCardStatus.pending;
+    } else {
+      return TaskCardStatus.completed;
+    }
+  }
+
+  Color getBackgroundColor(TaskCardStatus status, ThemeData theme) {
+    switch (status) {
+      case TaskCardStatus.pending:
+        return theme.colorScheme.primaryContainer;
+      case TaskCardStatus.completed:
+        return theme.colorScheme.tertiaryContainer;
+      case TaskCardStatus.disabled:
+        return theme.colorScheme.errorContainer;
+    }
+  }
+
+  Color getColor(TaskCardStatus status, ThemeData theme) {
+    switch (status) {
+      case TaskCardStatus.pending:
+        return theme.colorScheme.primary;
+      case TaskCardStatus.completed:
+        return theme.colorScheme.tertiary;
+      case TaskCardStatus.disabled:
+        return theme.colorScheme.error;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final progres = getProgress(board.tasks);
+    final theme = Theme.of(context);
+
+    final progress = getProgress(board.tasks);
     final progressText = getProgressText(board.tasks);
     final title = board.title;
-    const statusText = 'Pendente';
-    const iconData = Icons.access_alarm;
+    final status = getStatus(board, progress);
 
-    final backgroundColor = Colors.red[50];
-    const color = Colors.redAccent;
+    final statusText = status.text;
+    final iconData = status.icon;
+
+    final backgroundColor = getBackgroundColor(status, theme);
+    final color = getColor(status, theme);
 
     return Container(
       height: 130,
@@ -38,16 +86,16 @@ class TaskCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: const [
+            children: [
               Icon(iconData),
-              Spacer(),
+              const Spacer(),
               Text(statusText),
             ],
           ),
           const Spacer(),
           Text(title),
           LinearProgressIndicator(
-            value: progres,
+            value: progress,
             color: color,
           ),
           Text(progressText),
