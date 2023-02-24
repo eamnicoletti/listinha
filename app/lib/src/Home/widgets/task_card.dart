@@ -14,8 +14,10 @@ enum TaskCardStatus {
 
 class TaskCard extends StatelessWidget {
   final TaskBoard board;
+  final double height;
 
-  const TaskCard({Key? key, required this.board}) : super(key: key);
+  const TaskCard({Key? key, required this.board, this.height = 130})
+      : super(key: key);
 
   double getProgress(List<Task> tasks) {
     if (tasks.isEmpty) return 0;
@@ -76,7 +78,7 @@ class TaskCard extends StatelessWidget {
     final color = getColor(status, theme);
 
     return Container(
-      height: 130,
+      height: height,
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(25),
@@ -87,18 +89,46 @@ class TaskCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(iconData),
+              Icon(
+                iconData,
+                color: theme.iconTheme.color?.withOpacity(0.5),
+              ),
               const Spacer(),
-              Text(statusText),
+              Text(
+                statusText,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.textTheme.bodySmall?.color?.withOpacity(0.5),
+                ),
+              ),
             ],
           ),
           const Spacer(),
-          Text(title),
-          LinearProgressIndicator(
-            value: progress,
-            color: color,
+          Text(
+            title,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          Text(progressText),
+          const SizedBox(height: 8),
+          if (board.tasks.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LinearProgressIndicator(
+                  value: progress,
+                  color: color,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  progressText,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.textTheme.bodySmall?.color?.withOpacity(0.5),
+                  ),
+                ),
+              ],
+            ),
         ],
       ),
     );
