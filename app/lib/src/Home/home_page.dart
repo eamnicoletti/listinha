@@ -34,8 +34,20 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.fromLTRB(24, 65, 24, 100),
               itemCount: 100,
               itemBuilder: (_, index) {
-                final board = TaskBoard(Uuid.v4(), 'Nova lista de tarefas 1');
-                return TaskCard(board: board);
+                final board = TaskBoard(
+                  Uuid.v4(),
+                  'Nova lista de tarefas 1',
+                  tasks: [
+                    Task(Uuid.v4(), '', completed: true),
+                    Task(Uuid.v4(), '', completed: true),
+                    Task(Uuid.v4(), ''),
+                    Task(Uuid.v4(), ''),
+                  ],
+                );
+                return TaskCard(
+                  board: board,
+                  height: 140,
+                );
               },
               separatorBuilder: (context, index) {
                 return const SizedBox(height: 10);
