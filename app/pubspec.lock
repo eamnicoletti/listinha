@@ -90,7 +90,7 @@ packages:
     source: hosted
     version: "2.2.0"
   build_runner:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: build_runner
       sha256: b0a8a7b8a76c493e85f1b84bffa0588859a06197863dba8c9036b15581fd9727
@@ -523,6 +523,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  rx_notifier_generator:
+    dependency: "direct dev"
+    description:
+      name: rx_notifier_generator
+      sha256: "72822e75b7bf772bd7e5be4f7696aceb6e6c815285168a081a7b14f6e2cff7a0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   sane_uuid:
     dependency: transitive
     description:
